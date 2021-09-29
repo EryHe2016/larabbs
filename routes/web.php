@@ -44,3 +44,5 @@ Route::patch('/users/{user}', 'UsersController@update')->name('users.update');
 
 //资源路由 等同于上面三个
 //Route::resource('users', 'UsersController', ['only' => ['show', 'edit', 'update']]);
+
+Route::resource('topics', 'TopicsController', ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]);
