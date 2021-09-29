@@ -8,9 +8,12 @@
         "php": "^7.3|^8.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "intervention/image": "^2.6",
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "mews/captcha": "~3.0",
+        "overtrue/laravel-lang": "~3.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -19,7 +22,8 @@
         "laravel/ui": "^3.0",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "phpunit/phpunit": "^9.3.3",
+        "summerblue/generator": "8.*"
     },
     "autoload": {
         "psr-4": {
