@@ -43,4 +43,9 @@ class Topic extends Model
                 break;
         }
     }
+
+    public function link($param = [])
+    {
+        return route('topics.show', array_merge([$this->id, $this->slug], $param));
+    }
 }
