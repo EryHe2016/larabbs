@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Reply;
+use App\Notifications\TopicReplied;
 use Auth;
 
 // creating, created, updating, updated, saving,
@@ -20,6 +21,9 @@ class ReplyObserver
         $reply->topic->reply_count = $reply->topic->replies->count();
         $reply->topic->last_reply_user_id = Auth::id();
         $reply->topic->save();
+
+        //通知话题作者有新的评论
+        $reply->topic->user->notify(new TopicReplied($reply));
     }
 
     public function updating(Reply $reply)
