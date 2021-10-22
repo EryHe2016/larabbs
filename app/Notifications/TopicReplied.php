@@ -54,7 +54,7 @@ class TopicReplied extends Notification
             'reply_content' => $this->reply->content,
             'user_id' => $this->reply->user_id,
             'user_name' => $this->reply->user->name,
-            'user_avator' => $this->reply->user->avator,
+            'user_avatar' => $this->reply->user->avatar,
             'topic_link' => $link,
             'topic_id' => $topic->id,
             'topic_title' => $topic->title
