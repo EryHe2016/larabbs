@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Auth;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
@@ -15,6 +16,7 @@ class User extends Authenticatable
     use Notifiable {
         notify as protected laravelNotify;
     }
+    use HasRoles;
 
     public function notify($instance)
     {

@@ -18,12 +18,13 @@ class ReplyObserver
 
     public function created(Reply $reply)
     {
-        $reply->topic->reply_count = $reply->topic->replies->count();
-        $reply->topic->last_reply_user_id = Auth::id();
-        $reply->topic->save();
+        //命令运行迁移是不做这些操作
+        if(!app()->runningInConsole()){
+            $reply->topic->updateReplyCount();
 
-        //通知话题作者有新的评论
-        $reply->topic->user->notify(new TopicReplied($reply));
+            //通知话题作者有新的评论
+            $reply->topic->user->notify(new TopicReplied($reply));
+        }
     }
 
     public function updating(Reply $reply)
