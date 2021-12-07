@@ -42,7 +42,8 @@ class User extends Authenticatable
         'email',
         'password',
         'introduction',
-        'avatar'
+        'avatar',
+        'phone'
     ];
 
     /**
@@ -84,5 +85,10 @@ class User extends Authenticatable
         $this->notification_count = 0;
         $this->save();
         $this->unreadNotifications->markAsRead();
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
     }
 }
