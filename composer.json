@@ -18,12 +18,14 @@
         "mews/captcha": "~3.0",
         "mews/purifier": "~3.3",
         "overtrue/laravel-lang": "~3.0",
+        "overtrue/laravel-socialite": "~2.0",
         "overtrue/pinyin": "~4.0",
         "predis/predis": "~1.1",
         "propaganistas/laravel-phone": "^4.3",
         "spatie/laravel-permission": "~3.0",
         "summerblue/administrator": "8.*",
         "summerblue/laravel-active": "8.*",
+        "tymon/jwt-auth": "^1.0",
         "viacreative/sudo-su": "~1.1"
     },
     "require-dev": {

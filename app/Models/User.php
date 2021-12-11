@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Auth;
 use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmailTrait, JWTSubject
 {
     use HasApiTokens, HasFactory;
     use Notifiable {
@@ -43,7 +44,9 @@ class User extends Authenticatable
         'password',
         'introduction',
         'avatar',
-        'phone'
+        'phone',
+        'weixin_openid',
+        'weixin_unionid'
     ];
 
     /**
@@ -87,8 +90,18 @@ class User extends Authenticatable
         $this->unreadNotifications->markAsRead();
     }
 
-    public function setPasswordAttribute($value)
+    /*public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
+    }*/
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

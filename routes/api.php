@@ -34,11 +34,22 @@ Route::prefix('v1')
                 //用户注册
                 Route::post('/users', 'UsersController@store')
                     ->name('users.store');
+
+                //第三方登录
+                Route::post('/socials/{social_type}/authorizations', 'AuthorizationsController@socialStore')
+                    ->where('social_type', 'wechat')
+                    ->name('socials.authorizations.store');
             });
         Route::middleware('throttle:'.config('api.rate_limits.access'))
             ->group(function(){
 
             });
+
+        //登录
+        Route::post('login', 'AuthorizationsController@login');
+        Route::middleware('jwt.auth')->group(function($router){
+            //存放需要通过验证的路由
+        });
 
 });
 /*Route::prefix('v2')->name('api.v2.')->group(function(){
