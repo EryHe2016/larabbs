@@ -90,16 +90,22 @@ class User extends Authenticatable implements MustVerifyEmailTrait, JWTSubject
         $this->unreadNotifications->markAsRead();
     }
 
-    /*public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = bcrypt($value);
-    }*/
 
+    /**
+     * 返回user的ID
+     *
+     * @return mixed
+     */
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
 
+    /**
+     * 需要额外再JWT载荷中增加的自定义内容
+     *
+     * @return array
+     */
     public function getJWTCustomClaims()
     {
         return [];

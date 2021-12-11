@@ -12,6 +12,14 @@ use Overtrue\Socialite\AccessToken;
 
 class AuthorizationsController extends Controller
 {
+    /**
+     * 第三方登录
+     *
+     * @param $type
+     * @param SocialAuthorizationRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws AuthenticationException
+     */
     public function socialStore($type, SocialAuthorizationRequest $request)
     {
         $driver = Socialite::driver($type);
@@ -61,33 +69,60 @@ class AuthorizationsController extends Controller
                 }
                 break;
         }
-
-        return response()->json(['token'=>$user->id]);
+        $token = auth('api')->login($user);
+        return $this->respondWithToken($token)->setStatusCode(201);
     }
 
-    public function login(AuthorizationRequest $request)
+    /**
+     * 账号密码登录
+     *
+     * @param AuthorizationRequest $request
+     * @return \Illuminate\Http\JsonResponse|object
+     * @throws AuthenticationException
+     */
+    public function store(AuthorizationRequest $request)
     {
         $username = $request->username;
-
         filter_var($username, FILTER_VALIDATE_EMAIL) ?
             $credentials['email'] = $username :
             $credentials['phone'] = $username;
         $credentials['password'] = $request->password;
 
-        try{
-            $result = \Auth::attempt($credentials);
-        }catch(\Exception $e){
-            dd($credentials);
-        }
-        //验证密码是否正确
-        if (!$token = \Auth::guard('api')->attempt($credentials)) {
-            abort(403,'用户账号或密码错误');
+        if(!$token = \Auth::guard('api')->attempt($credentials)){
+            throw new AuthenticationException('用户名或密码错误');
         }
 
+        return $this->respondWithToken($token)->setStatusCode(201);
+    }
+
+    public function respondWithToken($token)
+    {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
-            'expires_in' => \Auth::guard('api')->factory()->getTTL()*60
-        ])->setStatusCode(201);
+            'expires_in' => auth('api')->factory()->getTTL() * 60
+        ]);
+    }
+
+    /**
+     * 刷新token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update()
+    {
+        $token = auth('api')->refresh();
+        return $this->respondWithToken($token);
+    }
+
+    /**
+     * 删除token
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function destory()
+    {
+        auth('api')->logout();
+        return response(null, 204);
     }
 }
