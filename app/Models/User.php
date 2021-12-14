@@ -57,6 +57,8 @@ class User extends Authenticatable implements MustVerifyEmailTrait, JWTSubject
     protected $hidden = [
         'password',
         'remember_token',
+        'weixin_openid',
+        'weixin_unionid'
     ];
 
     /**
