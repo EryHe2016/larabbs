@@ -22,18 +22,29 @@ class TopicRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'title' => 'required|string',
-            'content' => 'required|string|min:10',
-            'category_id' => 'required|exists:categories,id'
-        ];
+        switch($this->method()){
+            case 'POST':
+                return [
+                    'title' => 'required|string',
+                    'body' => 'required|string',
+                    'category_id' => 'required|exists:categories,id'
+                ];
+            break;
+            case 'PATCH':
+                return [
+                    'title' => 'string',
+                    'body' => 'string',
+                    'category_id' => 'exists:category,id'
+                ];
+                break;
+        }
     }
 
     public function attributes()
     {
         return [
             'title' => '话题标题',
-            'content' => '话题内容',
+            'body' => '话题内容',
             'category_id' => '话题分类'
         ];
     }
