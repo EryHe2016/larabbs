@@ -80,6 +80,13 @@ class TopicsController extends Controller
         return TopicResource::collection($topics);
     }
 
+    /**
+     * 指定用户的话题列表
+     *
+     * @param Request $request
+     * @param User $user
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function userIndex(Request $request, User $user)
     {
         $query = $user->topics()->getQuery();
@@ -94,5 +101,14 @@ class TopicsController extends Controller
             ->paginate();
 
         return TopicResource::collection($topics);
+    }
+
+    public function show($topicId)
+    {
+        $topic = QueryBuilder::for(Topic::class)
+            ->allowedIncludes('user', 'category')
+            ->findOrFail($topicId);
+
+        return new TopicResource($topic);
     }
 }
