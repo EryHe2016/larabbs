@@ -8,9 +8,8 @@ Trait QueryBuilderBindable
         $queryClass = property_exists($this, 'queryClass')
             ? $this->queryClass
             : '\\App\\Http\\Queries\\'.class_basename(self::class).'Query';
-
         if(!class_exists($queryClass)){
-            return Parent::resolveRouteBinding($value);
+            return parent::resolveRouteBinding($value);
         }
 
         return (new $queryClass($this))

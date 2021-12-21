@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Queries\TopicQuery;
 use App\Http\Requests\Api\TopicRequest;
 use App\Http\Resources\TopicResource;
 use App\Models\Topic;
@@ -103,12 +104,16 @@ class TopicsController extends Controller
         return TopicResource::collection($topics);
     }
 
-    public function show($topicId)
+    public function show($topicId, TopicQuery $query)
     {
-        $topic = QueryBuilder::for(Topic::class)
+        /* 使用include机制 方法一 不使用路由模型绑定 直接接收$topicId
+         *
+         * $topic = QueryBuilder::for(Topic::class)
             ->allowedIncludes('user', 'category')
-            ->findOrFail($topicId);
+            ->findOrFail($topicId);*/
 
+        //方法二 model重写 resolveRouteBinding()
+        $topic = $query->findOrFail($topicId);
         return new TopicResource($topic);
     }
 }
