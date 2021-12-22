@@ -11,7 +11,7 @@ Trait QueryBuilderBindable
         if(!class_exists($queryClass)){
             return parent::resolveRouteBinding($value);
         }
-
+dd($this);
         return (new $queryClass($this))
             ->where($this->getRouteKeyName(), $value)
             ->first();

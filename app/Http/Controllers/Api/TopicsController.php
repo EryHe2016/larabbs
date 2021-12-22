@@ -59,7 +59,7 @@ class TopicsController extends Controller
      * @param Topic $topic
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(Request $request, Topic $topic)
+    public function index(Request $request, TopicQuery $query)
     {
         /*$query = $topic->query();
 
@@ -70,14 +70,15 @@ class TopicsController extends Controller
         $topics = $query
             ->with('user', 'category')
             ->withOrder($request->order)->paginate();*/
-        $topics = QueryBuilder::for(Topic::class)
+        /*$topics = QueryBuilder::for(Topic::class)
             ->allowedIncludes('user', 'category')
             ->allowedFilters([
                 'title',
                 AllowedFilter::exact('category_id'),
                 AllowedFilter::scope('withOrder')->default('recentReplied'),
             ])
-            ->paginate();
+            ->paginate();*/
+        $topics = $query->paginate();
         return TopicResource::collection($topics);
     }
 
@@ -88,9 +89,9 @@ class TopicsController extends Controller
      * @param User $user
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function userIndex(Request $request, User $user)
+    public function userIndex(Request $request, User $user, TopicQuery $query)
     {
-        $query = $user->topics()->getQuery();
+        /*$query = $user->topics()->getQuery();
 
         $topics = QueryBuilder::for($query)
             ->allowedIncludes('user', 'category')
@@ -99,7 +100,9 @@ class TopicsController extends Controller
                 AllowedFilter::exact('category_id'),
                 AllowedFilter::scope('withOrder')->default('recentReplied'),
             ])
-            ->paginate();
+            ->paginate();*/
+
+        $topics = $query->where('user_id', $user->id)->paginate();
 
         return TopicResource::collection($topics);
     }
