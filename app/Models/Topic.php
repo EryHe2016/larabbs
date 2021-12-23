@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Traits\QueryBuilderBindable;
+
 
 class Topic extends Model
 {
     use HasFactory;
+    use Traits\QueryBuilderBindable;
 
     protected $fillable = [
         'title', 'body', 'category_id', 'excerpt', 'slug'];

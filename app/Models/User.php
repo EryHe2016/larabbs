@@ -18,6 +18,7 @@ class User extends Authenticatable implements MustVerifyEmailTrait, JWTSubject
         notify as protected laravelNotify;
     }
     use HasRoles;
+    use Traits\ActiveUserHelper;
 
     public function notify($instance)
     {

@@ -3,7 +3,7 @@ namespace App\Models\Traits;
 
 Trait QueryBuilderBindable
 {
-    public function resolveRouteBinding($value)
+    public function resolveRouteBinding($value, $field = NULL)
     {
         $queryClass = property_exists($this, 'queryClass')
             ? $this->queryClass

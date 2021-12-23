@@ -56,10 +56,11 @@ class TopicsController extends Controller
      * 话题列表
      *
      * @param Request $request
-     * @param Topic $topic
+     * @param User $user
+     * @param $query
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(Request $request, TopicQuery $query)
+    public function index(Request $request, User $user, TopicQuery $query)
     {
         /*$query = $topic->query();
 
@@ -79,6 +80,7 @@ class TopicsController extends Controller
             ])
             ->paginate();*/
         $topics = $query->paginate();
+        $active_users = $user->getActiveUsers();dd($active_users);
         return TopicResource::collection($topics);
     }
 
