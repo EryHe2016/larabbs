@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 class Kernel extends HttpKernel
 {
     /**
-     * The application's global HTTP middleware stack.
+     * 全局中间件
      *
      * These middleware are run during every request to your application.
      *
@@ -15,20 +15,28 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
+        //修正代理服务器后的服务器参数
         \App\Http\Middleware\TrustProxies::class,
+        //解决cors跨域问题
         \Fruitcake\Cors\HandleCors::class,
+        //检查应用是否进入 维护模式
+        // 见：https://learnku.com/docs/laravel/8.x/configuration#maintenance-mode
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
+        //检测表单请求的数据是否过大
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
+        //对所有提交的请求数据进行 PHP 函数的 trim() 处理
         \App\Http\Middleware\TrimStrings::class,
+        //将提交请求参数中空子串转换为 null
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
 
     /**
-     * The application's route middleware groups.
+     * 设定中间件组
      *
      * @var array
      */
     protected $middlewareGroups = [
+        //web中间件组，应用于routes/web.php路由文件 在RouteServiceProvider中设定
         'web' => [
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
@@ -38,8 +46,11 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\EnsureEmailIsVerified::class,
+            //记录用户最后活跃时间
+            \App\Http\Middleware\RecordLastActivedTime::class,
         ],
 
+        //api中间件组，应用于routes/api.php 路由文件
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \App\Http\Middleware\AcceptHeader::class,
@@ -49,7 +60,7 @@ class Kernel extends HttpKernel
     ];
 
     /**
-     * The application's route middleware.
+     * 中间件别名设置，允许使用别名调用中间件
      *
      * These middleware may be assigned to groups or used individually.
      *

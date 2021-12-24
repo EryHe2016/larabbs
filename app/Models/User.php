@@ -19,6 +19,7 @@ class User extends Authenticatable implements MustVerifyEmailTrait, JWTSubject
     }
     use HasRoles;
     use Traits\ActiveUserHelper;
+    use Traits\LastActivedAtHelper;
 
     public function notify($instance)
     {
